@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,5 +13,6 @@
 |
 */
 
-Route::get('/', 'front\PanelController@index');
-Route::resource('/stock', 'StockController');
+Route::get('/', function () {
+    return view('welcome');
+});
