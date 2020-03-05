@@ -42,6 +42,7 @@
                 <h3 class="card-title">Data {{ $title }}</h3>
                 <div class="float-right">
                     <!-- add modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-add-modal-lg">Tambah Data</button>
                     {{-- <a href="{{ route('panel.news.create') }}" class="btn btn-primary">Add {{ $title }}</a> --}}
                 </div>
             </div>
@@ -65,30 +66,36 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Judul</th>
-                            <th>Kontributor</th>
-                            <th>Action</th>
+                            <th>Barang</th>
+                            <th>Stock</th>
+                            <th>Tgl Kadaluarsa</th>
+                            <th>Keterangan</th>
+                            <th>Menu</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @foreach ($data as $title) --}}
+                        @foreach ($data as $stock)
                         <tr>
-                            {{-- <td>{{ $loop->iteration }}</td>
-                            <td>{{ $title->news_title }}</td>
-                            <td>{{ $title->contributors->name_contributor }}</td> --}}
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $stock->barang }}</td>
+                            <td>{{ $stock->stock}}</td>
+                            <td>{{ $stock->tgl_kadaluarsa}}</td>
+                            <td>{{ $stock->keterangan}}</td>
                             <td>
-                                {{-- <a href="{{ route('panel.news.edit', $title->id ) }}" class="btn btn-warning"> edit </a> --}}
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target=".bd-delete-modal-lg">Delete</button>
+                                <a href="{{ route('stock.edit', $stock->id ) }}" class="btn btn-warning"> edit </a>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target=".bd-delete-modal-lg{{ $stock->id }}">Delete</button>
                             </td>
                         </tr>
-                        {{-- @endforeach --}}
+                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
                             <th>No</th>
-                            <th>Nama</th>
-                            <th>Kontributor</th>
-                            <th>Action</th>
+                            <th>Barang</th>
+                            <th>Stock</th>
+                            <th>Tgl Kadaluarsa</th>
+                            <th>Keterangan</th>
+                            <th>Menu</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -96,36 +103,66 @@
         </div><!-- /.card -->
     </div>
 
-    <!-- add modal -->
-    <div class="modal fade bd-add-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add {{ $title }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form method="post" action="">
+  <!-- add stok modal -->
+  <div class="modal fade bd-add-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Contributor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+              <form method="post" action="{{ route('stock.store') }}" enctype="multipart/form-data">
                     <div class="modal-body">
                         @csrf
                         <div class="form-group row">
-                            <label for="news_title" class="col-sm-2 col-form-label">Judul</label>
+                            <label for="barang" class="col-sm-2 col-form-label">Barang</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control @error('news_title') is-invalid @enderror" id="news_title" name="news_title" onkeyup='saveValue(this);'>
-                                @error('news_title')
-                                <label class="col-form-label" for="news_title">
+                                <input type="text" class="form-control @error('barang') is-invalid @enderror" id="barang" name="barang" value="{{ old('barang') }}">
+                                @error('barang')
+                                <label class="col-form-label" for="barang">
                                     {{ $message }}
                                 </label>
                                 @enderror
                             </div>
                         </div>
-                    <textarea class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-
+                        <div class="form-group row">
+                            <label for="stok" class="col-sm-2 col-form-label">Stok</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control @error('stok') is-invalid @enderror" id="stok" name="stok" value="{{ old('stok') }}">
+                                @error('stok')
+                                <label class="col-form-label" for="stok">
+                                    {{ $message }}
+                                </label>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="kadaluarsa" class="col-sm-2 col-form-label">Tgl Kadaluarsa</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control @error('kadaluarsa') is-invalid @enderror" id="kadaluarsa" name="kadaluarsa" value="{{ old('kadaluarsa') }}">
+                                @error('kadaluarsa')
+                                <label class="col-form-label" for="kadaluarsa">
+                                    {{ $message }}
+                                </label>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
+                            <div class="col-sm-10">
+                                <input type="textarea" class="form-control @error('keterangan') is-invalid @enderror" id="keterangan" name="keterangan" value="{{ old('keterangan') }}">
+                                @error('keterangan')
+                                <label class="col-form-label" for="keterangan">
+                                    {{ $message }}
+                                </label>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </form>
             </div>
@@ -133,7 +170,7 @@
     </div>
 
     <!-- add modal -->
-    <div class="modal fade bd-delete-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal fade bd-delete-modal-lg{{ $stock->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -147,9 +184,9 @@
                         <h5> Apakah anda yakin untuk menghapus ?</h5>
                     </div>
                     <div class="modal-footer">
-                        {{-- <form method="post" action="{{ route('panel.news.destroy', $title->id ) }}" class="d-inline"> --}}
+                        <form method="post" action="{{ route('stock.destroy', $stock->id ) }}" class="d-inline">
                             @method('delete') @csrf
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>

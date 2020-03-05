@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\back;
 
-use App\Models\back\stocks;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Back\stock;
 // use Illuminate\Http\Request;
 
 class StockController extends Controller
 {
-    private $title = 'Stock';
+    private $title = 'stock';
 
     /**
      * Display a listing of the resource.
@@ -18,10 +18,13 @@ class StockController extends Controller
      */
     public function index()
     {
+        // get data
+        $data                   = stock::get();
+
         // title & path
-        //  $path                   = explode("/", $request->path());
+        //  $path                = explode("/", $request->path());
          $title                  = $this->title;
-         return view('back.stock.index',compact('title'));
+         return view('back.stock.index',compact('title', 'data'));
     }
 
     /**
@@ -43,7 +46,16 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         // insert db
+         $stock = new stock;
+         $stock->barang         = $request->barang;
+         $stock->stock          = $request->stok;
+         $stock->tgl_kadaluarsa = $request->kadaluarsa;
+         $stock->keterangan     = $request->keterangan;
+
+         $stock->save();
+
+         return redirect('stock')->with('success', 'Data Stok Berhasil Ditambahkan');
     }
 
     /**
@@ -65,7 +77,12 @@ class StockController extends Controller
      */
     public function edit(stock $stock)
     {
-        //
+        $data                   = stock::get();
+
+        // title & path
+        //  $path                = explode("/", $request->path());
+         $title                  = $this->title;
+         return view('back.stock.edit',compact('title', 'data'));
     }
 
     /**
@@ -88,6 +105,7 @@ class StockController extends Controller
      */
     public function destroy(stock $stock)
     {
-        //
+        stock::destroy($stock->id);
+        return redirect('stock')->with('success', 'Data Berhasil Dihapus');
     }
 }
