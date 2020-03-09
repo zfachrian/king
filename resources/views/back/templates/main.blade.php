@@ -156,7 +156,7 @@
               <li class="nav-item">
                 <a href="{{ route('stock.index') }}" class="nav-link @if($title == 'Stock') active @endif">
                   <i class="far fa-newspaper"></i>
-                  <p>News</p>
+                  <p>Stok</p>
                 </a>
               </li>
               {{-- <li class="nav-item">

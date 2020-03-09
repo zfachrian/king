@@ -14,7 +14,7 @@ class StockTableSeeder extends Seeder
      */
     public function run()
     {
-        stocks::create([
+        DB::table('stocks')->insert([
             'barang'            => 'barang-1',
             'stock'             => '1',
             'tgl_kadaluarsa'    => '2000-01-01',

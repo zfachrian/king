@@ -82,7 +82,7 @@ class StockController extends Controller
         // title & path
         //  $path                = explode("/", $request->path());
          $title                  = $this->title;
-         return view('back.stock.edit',compact('title', 'data'));
+         return view('back.stock.edit',compact('title', 'data', 'stock'));
     }
 
     /**
@@ -94,7 +94,15 @@ class StockController extends Controller
      */
     public function update(Request $request, stock $stock)
     {
-        //
+         // insert db
+        stock::where('id', $request->id)->Update([
+         $stock->barang         = $request->barang,
+         $stock->stock          = $request->stok,
+         $stock->tgl_kadaluarsa = $request->kadaluarsa,
+         $stock->keterangan     = $request->keterangan
+        ]);
+
+         return redirect('back.stock')->with('success', 'Data Stok Berhasil Diubah');
     }
 
     /**

@@ -93,13 +93,14 @@
                     <div class="alert alert-danger">{{ $error }}</div>
                     @endforeach
                 @endif
-                <form method="post" action="{{ route('stock.store') }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('stock.update',$stock->id) }}" class="form-horizontal" enctype="multipart/form-data">
+                    @method('PUT') @csrf <input type="hidden" name="id" value="{{ $stock->id }}">
+
                     <div class="modal-body">
-                        @csrf
                         <div class="form-group row">
                             <label for="barang" class="col-sm-2 col-form-label">Barang</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control @error('barang') is-invalid @enderror" id="barang" name="barang" value="{{ old('barang') }}">
+                                <input type="text" class="form-control @error('barang') is-invalid @enderror" id="barang" name="barang" value="{{ $stock->barang }}">
                                 @error('barang')
                                 <label class="col-form-label" for="barang">
                                     {{ $message }}
@@ -110,7 +111,7 @@
                         <div class="form-group row">
                             <label for="stok" class="col-sm-2 col-form-label">Stok</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control @error('stok') is-invalid @enderror" id="stok" name="stok" value="{{ old('stok') }}">
+                                <input type="number" class="form-control @error('stok') is-invalid @enderror" id="stok" name="stok" value="{{ $stock->stock }}">
                                 @error('stok')
                                 <label class="col-form-label" for="stok">
                                     {{ $message }}
@@ -121,7 +122,7 @@
                         <div class="form-group row">
                             <label for="kadaluarsa" class="col-sm-2 col-form-label">Tgl Kadaluarsa</label>
                             <div class="col-sm-10">
-                                <input type="date" class="form-control @error('kadaluarsa') is-invalid @enderror" id="kadaluarsa" name="kadaluarsa" value="{{ old('kadaluarsa') }}">
+                                <input type="date" class="form-control @error('kadaluarsa') is-invalid @enderror" id="kadaluarsa" name="kadaluarsa" value="{{ $stock->tgl_kadaluarsa }}">
                                 @error('kadaluarsa')
                                 <label class="col-form-label" for="kadaluarsa">
                                     {{ $message }}
@@ -132,7 +133,7 @@
                         <div class="form-group row">
                             <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
                             <div class="col-sm-10">
-                                <input type="textarea" class="form-control @error('keterangan') is-invalid @enderror" id="keterangan" name="keterangan" value="{{ old('keterangan') }}">
+                                <input type="textarea" class="form-control @error('keterangan') is-invalid @enderror" id="keterangan" name="keterangan" value="{{ $stock->keterangan }}">
                                 @error('keterangan')
                                 <label class="col-form-label" for="keterangan">
                                     {{ $message }}
