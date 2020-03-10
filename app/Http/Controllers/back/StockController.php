@@ -46,6 +46,13 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
+
+         // validate
+         $request->validate([
+            'barang'            => 'required',
+            'stock'             => 'numeric'
+        ]);
+
          // insert db
          $stock = new stock;
          $stock->barang         = $request->barang;
@@ -94,15 +101,22 @@ class StockController extends Controller
      */
     public function update(Request $request, stock $stock)
     {
-         // insert db
-        stock::where('id', $request->id)->Update([
-         $stock->barang         = $request->barang,
-         $stock->stock          = $request->stok,
-         $stock->tgl_kadaluarsa = $request->kadaluarsa,
-         $stock->keterangan     = $request->keterangan
+
+        // validate
+        $request->validate([
+            'barang'            => 'required',
+            'stock'             => 'numeric'
         ]);
 
-         return redirect('back.stock')->with('success', 'Data Stok Berhasil Diubah');
+         // insert db
+        stock::where('id', $request->id)->Update([
+         'barang'         => $request->barang,
+         'stock'          => $request->stok,
+         'tgl_kadaluarsa' => $request->kadaluarsa,
+         'keterangan'     => $request->keterangan
+        ]);
+
+         return redirect('stock')->with('success', 'Data Stok Berhasil Diubah');
     }
 
     /**
